@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Traffic, { ITraffic } from '../database/models/traffic';
+import Traffic from '../database/models/traffic.model';
 
 export const getUserAgentStats = async (
   req: Request,
@@ -24,6 +24,34 @@ export const getUserAgentStats = async (
               ],
             },
           },
+          macVisits: {
+            $sum: {
+              $cond: [
+                {
+                  $regexMatch: {
+                    input: '$userAgent',
+                    regex: '.*(Macintosh).*',
+                  },
+                },
+                '$visitCount',
+                0,
+              ],
+            },
+          },
+          windowsVisits: {
+            $sum: {
+              $cond: [
+                {
+                  $regexMatch: {
+                    input: '$userAgent',
+                    regex: '.*(Windows).*',
+                  },
+                },
+                '$visitCount',
+                0,
+              ],
+            },
+          },
           mobileVisits: {
             $sum: {
               $cond: [
@@ -31,6 +59,34 @@ export const getUserAgentStats = async (
                   $regexMatch: {
                     input: '$userAgent',
                     regex: '.*(iPhone|Android).*',
+                  },
+                },
+                '$visitCount',
+                0,
+              ],
+            },
+          },
+          iPhoneVisits: {
+            $sum: {
+              $cond: [
+                {
+                  $regexMatch: {
+                    input: '$userAgent',
+                    regex: '.*(iPhone).*',
+                  },
+                },
+                '$visitCount',
+                0,
+              ],
+            },
+          },
+          androidVisits: {
+            $sum: {
+              $cond: [
+                {
+                  $regexMatch: {
+                    input: '$userAgent',
+                    regex: '.*(Android).*',
                   },
                 },
                 '$visitCount',

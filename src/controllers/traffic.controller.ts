@@ -1,20 +1,23 @@
 import { Request, Response } from 'express';
-import Traffic from '../database/models/traffic';
+import Traffic, { ITraffic } from '../database/models/traffic.model';
 
 export const track = async (req: Request, res: Response): Promise<void> => {
   try {
     const sessionID = req.sessionID;
     const userAgent = req.get('user-agent');
+    const timestamp = new Date();
 
-    const existingTraffic = await Traffic.findOne({ sessionID });
+    let traffic: ITraffic | null = await Traffic.findOne({ sessionID });
 
-    if (existingTraffic) {
-      existingTraffic.visitCount += 1;
-      await existingTraffic.save();
+    if (traffic) {
+      traffic.visitCount += 1;
+      traffic.timestamp = timestamp;
+      await traffic.save();
     } else {
-      const traffic = new Traffic({
+      traffic = new Traffic({
         sessionID,
         userAgent,
+        timestamp,
       });
       await traffic.save();
     }

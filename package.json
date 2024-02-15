@@ -6,7 +6,9 @@
   "author": "EdwinBayingana <bayinganaedwin@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon app.ts",
+    "dev": "ts-node-dev app.ts",
+    "start": "ts-node app.ts",
+    "build": "tsc && echo 'Build complete.'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -16,7 +18,8 @@
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.1.2"
+    "mongoose": "^8.1.2",
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
